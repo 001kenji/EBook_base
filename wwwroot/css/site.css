@@ -1,0 +1,510 @@
+/* ---------- Modern page header ---------- */
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+    .page-header h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0;
+        color: #0b1e2e;
+    }
+
+    .page-header .subtitle {
+        display: block;
+        font-size: 0.9rem;
+        color: #6b7a8d;
+        margin-top: 0.2rem;
+    }
+
+.avatar-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f9cf9, #2b7fd9);
+    color: #fff;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(79, 156, 249, 0.35);
+}
+
+.navbar-nav .dropdown-toggle::after {
+    margin-left: 4px;
+    vertical-align: middle;
+    border-top-color: #4a5a6e;
+}
+/* Keep the navbar above the main content */
+.navbar {
+    position: sticky; /* or relative — either creates a stacking context */
+    top: 0;
+    z-index: 1030; /* Bootstrap's own navbar z-index */
+}
+
+    /* The dropdown must escape any parent stacking context */
+    .navbar .dropdown-menu {
+        z-index: 1050; /* above .modal-backdrop (1040) and .modal (1055 falls short if needed) */
+    }
+
+/* Main content should NOT create a competing stacking context */
+main[role="main"] {
+    position: relative;
+    z-index: 1; /* lower than the navbar */
+}
+
+.navbar-nav .dropdown-menu {
+    min-width: 210px;
+    padding: 0.4rem;
+    background: #ffffff;
+    box-shadow: 0 18px 40px -12px rgba(0, 20, 40, 0.2) !important;
+}
+
+.navbar-nav .dropdown-item {
+    border-radius: 10px;
+    padding: 0.55rem 0.85rem;
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: #1f2a3a;
+}
+
+    .navbar-nav .dropdown-item:hover,
+    .navbar-nav .dropdown-item:focus {
+        background-color: #e8f0fe;
+        color: #0b2d4e;
+    }
+
+    .navbar-nav .dropdown-item.text-danger:hover {
+        background-color: #fdecec;
+        color: #b02a2a !important;
+    }
+
+.navbar-nav .dropdown-divider {
+    margin: 0.35rem 0.5rem;
+    opacity: 0.08;
+}
+
+/* ---------- Card wrapper for forms / details ---------- */
+.form-card,
+.details-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px -12px rgba(0, 20, 40, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    max-width: 720px;
+}
+
+    .form-card .form-group,
+    .form-card .mb-3 {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-card label {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: #2c3e50;
+        margin-bottom: 0.4rem;
+    }
+
+    .form-card .form-control,
+    .form-card .form-select {
+        border-radius: 12px;
+        border: 1px solid #dfe6ee;
+        padding: 0.65rem 0.9rem;
+        font-size: 0.95rem;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+        .form-card .form-control:focus {
+            border-color: #4f9cf9;
+            box-shadow: 0 0 0 4px rgba(79, 156, 249, 0.15);
+        }
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Modern table ---------- */
+.table-modern {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -12px rgba(0, 20, 40, 0.12);
+}
+
+    .table-modern thead th {
+        background: #f4f7fb;
+        color: #4a5a6e;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 0.9rem 1rem;
+        border: none;
+        text-align: left;
+    }
+
+    .table-modern tbody td {
+        padding: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        font-size: 0.95rem;
+        color: #1f2a3a;
+        vertical-align: middle;
+    }
+
+    .table-modern tbody tr:hover {
+        background: #f9fbfd;
+    }
+
+    .table-modern tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+.table-actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+/* ---------- Small pill buttons ---------- */
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 40px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    line-height: 1.2;
+}
+
+    .btn-pill i {
+        font-size: 0.9rem;
+    }
+
+.btn-pill-primary {
+    background: #4f9cf9;
+    color: #fff;
+}
+
+    .btn-pill-primary:hover {
+        background: #2b7fd9;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px -4px rgba(79, 156, 249, 0.5);
+    }
+
+.btn-pill-neutral {
+    background: #f4f7fb;
+    color: #2c3e50;
+}
+
+    .btn-pill-neutral:hover {
+        background: #e8f0fe;
+        color: #0b2d4e;
+    }
+
+.btn-pill-danger {
+    background: #fdecec;
+    color: #b02a2a;
+}
+
+    .btn-pill-danger:hover {
+        background: #f8d7d7;
+        color: #8a1f1f;
+    }
+
+/* ---------- Details list ---------- */
+.details-list {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0.85rem 1.5rem;
+    margin: 0;
+}
+
+    .details-list dt {
+        font-weight: 500;
+        color: #6b7a8d;
+        font-size: 0.88rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .details-list dd {
+        margin: 0;
+        color: #1f2a3a;
+        font-size: 0.98rem;
+        font-weight: 500;
+    }
+
+@media (max-width: 600px) {
+    .details-list {
+        grid-template-columns: 1fr;
+        gap: 0.25rem 0;
+    }
+
+        .details-list dd {
+            margin-bottom: 0.75rem;
+        }
+}
+
+/* ---------- Delete warning banner ---------- */
+.delete-warning {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #fff5f5;
+    border: 1px solid #f8d7d7;
+    color: #8a1f1f;
+    padding: 1rem 1.25rem;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+    .delete-warning i {
+        font-size: 1.4rem;
+    }
+
+
+/* ---------- Reader modal ---------- */
+.reader-modal {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -20px rgba(0, 20, 40, 0.35);
+}
+
+.reader-header {
+    background: linear-gradient(135deg, #1e2b3c, #0f1a26);
+    color: #fff;
+    border-bottom: none;
+    padding: 1rem 1.25rem;
+}
+
+    .reader-header .modal-title {
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+
+    .reader-header .bi-book-half {
+        color: #4f9cf9;
+        font-size: 1.2rem;
+    }
+
+    .reader-header .btn-close {
+        filter: invert(1) brightness(2);
+        opacity: 0.75;
+    }
+
+        .reader-header .btn-close:hover {
+            opacity: 1;
+        }
+
+.reader-badge {
+    font-size: 0.78rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #cfe1f7;
+    padding: 0.25rem 0.7rem;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reader-body {
+    background: #f8fafd;
+    min-height: 400px;
+    padding: 0;
+}
+
+.reader-footer {
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.75rem 1.25rem;
+}
+
+.reader-loading,
+.reader-unsupported {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    padding: 2rem;
+    text-align: center;
+    color: #4a5a6e;
+}
+
+    .reader-unsupported .bi {
+        font-size: 3rem;
+        opacity: 0.6;
+    }
+
+.reader-text {
+    margin: 0;
+    padding: 1.75rem 2rem;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #1f2a3a;
+    background: #ffffff;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 400px;
+}
+
+.reader-frame {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    background: #fff;
+    display: block;
+}
+
+.reader-image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: #eef3f9;
+    min-height: 400px;
+}
+
+.reader-image {
+    max-width: 100%;
+    max-height: 65vh;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px -12px rgba(0, 20, 40, 0.25);
+}
+
+
+/* ---------- Chips (e.g. payment method) ---------- */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #eef3f9;
+    color: #2c3e50;
+    padding: 0.3rem 0.7rem;
+    border-radius: 40px;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+    .chip i {
+        color: #4f9cf9;
+        font-size: 0.85rem;
+    }
+
+/* ---------- Status badges ---------- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: 40px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+    border: 1px solid transparent;
+}
+
+    .status-badge i {
+        font-size: 0.5rem;
+        line-height: 1;
+    }
+
+.status-paid {
+    background: #e6f6ec;
+    color: #1f7a42;
+    border-color: #c8ecd5;
+}
+
+    .status-paid i {
+        color: #2fbe6a;
+    }
+
+.status-pending {
+    background: #fff5e0;
+    color: #a06a00;
+    border-color: #f5e3b8;
+}
+
+    .status-pending i {
+        color: #f0a500;
+    }
+
+.status-failed {
+    background: #fdecec;
+    color: #b02a2a;
+    border-color: #f8d7d7;
+}
+
+    .status-failed i {
+        color: #e04a4a;
+    }
+
+.status-neutral {
+    background: #eef3f9;
+    color: #4a5a6e;
+    border-color: #dfe6ee;
+}
+
+    .status-neutral i {
+        color: #8a9bb0;
+    }
+
+/* ---------- Payment amount hero (Details page) ---------- */
+.payment-amount-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.payment-amount-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a9bb0;
+    font-weight: 600;
+}
+
+.payment-amount-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0b1e2e;
+    margin-top: 0.25rem;
+    background: linear-gradient(135deg, #0b1e2e, #1e3b5a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

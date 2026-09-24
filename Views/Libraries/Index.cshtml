@@ -1,0 +1,235 @@
+@model IEnumerable<EBook.Models.Library>
+
+@{
+    ViewData["Title"] = "Library";
+    var isAdmin = User.IsInRole("Admin");
+}
+
+<div class="page-header">
+    <div>
+        <h1>Library</h1>
+        <span class="subtitle">Browse and manage your collection of books</span>
+    </div>
+    <div>
+        @if (isAdmin)
+        {
+            <a asp-action="Create" class="btn-pill btn-pill-primary">
+                <i class="bi bi-plus-lg"></i> Create New
+            </a>
+        }
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5 text-muted">
+        <i class="bi bi-inbox" style="font-size:2.5rem;"></i>
+        <p class="mt-3 mb-0">No books in the library yet.</p>
+    </div>
+}
+else
+{
+    <table class="table-modern">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Scope)</th>
+                <th>@Html.DisplayNameFor(model => model.Curriculum)</th>
+                @if (isAdmin)
+                {
+                    <th>@Html.DisplayNameFor(model => model.FilePath)</th>
+                }
+                <th style="width:1%; white-space:nowrap;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>@Html.DisplayFor(model => item.Name)</strong></td>
+                    <td>@Html.DisplayFor(model => item.Scope)</td>
+                    <td>@Html.DisplayFor(model => item.Curriculum)</td>
+                    @if (isAdmin)
+                    {
+                        <td class="text-muted small">@Html.DisplayFor(model => item.FilePath)</td>
+                    }
+                    <td>
+                        <div class="table-actions">
+                            @if (!string.IsNullOrWhiteSpace(item.FilePath))
+                            {
+                                <button type="button"
+                                        class="btn-pill btn-pill-primary js-read-file"
+                                        data-id="@item.id"
+                                        data-title="@item.Name">
+                                    <i class="bi bi-book"></i> Read
+                                </button>
+                            }
+                            <a asp-action="Details" asp-route-id="@item.id" class="btn-pill btn-pill-neutral">
+                                <i class="bi bi-eye"></i> Details
+                            </a>
+                            @if (isAdmin)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.id" class="btn-pill btn-pill-neutral">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.id" class="btn-pill btn-pill-danger">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- ============ Reader modal ============ -->
+<div class="modal fade" id="readerModal" tabindex="-1" aria-labelledby="readerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content reader-modal">
+            <div class="modal-header reader-header">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-book-half"></i>
+                    <h5 class="modal-title mb-0" id="readerModalLabel">Reader</h5>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="reader-badge" id="readerFileName"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+
+            <div class="modal-body reader-body" id="readerBody">
+                <!-- content injected here -->
+            </div>
+
+            <div class="modal-footer reader-footer">
+                <span class="text-muted small me-auto">Read-only view</span>
+                <button type="button" class="btn-pill btn-pill-neutral" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        function boot() {
+            if (typeof window.bootstrap === 'undefined' || !window.bootstrap.Modal) {
+                return setTimeout(boot, 80);
+            }
+
+            const modalEl = document.getElementById('readerModal');
+            if (!modalEl || modalEl.dataset.bound === 'true') return;
+            modalEl.dataset.bound = 'true';
+
+            // CRITICAL FIX: Relocate the modal element directly to <body>
+            // to prevent layout z-index issues from trapping the backdrop over the page.
+            document.body.appendChild(modalEl);
+
+            // Use getOrCreateInstance to prevent duplicate modal instances
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl, { backdrop: true, keyboard: true });
+            const body = document.getElementById('readerBody');
+            const titleEl = document.getElementById('readerModalLabel');
+            const nameEl = document.getElementById('readerFileName');
+
+            // Restore body scrolling when the modal finishes hiding
+            modalEl.addEventListener('hidden.bs.modal', function() {
+                document.body.style.overflow = '';
+                document.body.classList.remove('modal-open');
+                document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+            });
+
+            document.querySelectorAll('.js-read-file').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const id = btn.dataset.id;
+                    const title = btn.dataset.title || 'Reader';
+
+                    titleEl.textContent = title;
+                    nameEl.textContent = '';
+                    body.innerHTML = `
+                            <div class="reader-loading text-center py-4">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-3 mb-0 text-muted">Loading file…</p>
+                            </div>`;
+
+                    modal.show();
+
+                    try {
+                        const res = await fetch(`/Libraries/ReadFile/${id}`, {
+                            headers: { 'Accept': 'application/json' }
+                        });
+
+                        if (!res.ok) {
+                            const err = await res.json().catch(() => ({}));
+                            renderError(err.error || 'Unable to load file.');
+                            return;
+                        }
+
+                        const data = await res.json();
+                        nameEl.textContent = data.name || '';
+
+                        if (data.type === 'text') renderText(data.content);
+                        else if (data.type === 'pdf') renderPdf(data.url);
+                        else if (data.type === 'image') renderImage(data.url, data.name);
+                        else renderUnsupported(data.url, data.name);
+                    } catch (err) {
+                        renderError('Network error while loading file.');
+                    }
+                });
+            });
+
+            function escapeHtml(s) {
+                return (s ?? '')
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            function renderText(content) {
+                body.innerHTML = `<pre class="reader-text">${escapeHtml(content)}</pre>`;
+            }
+
+            function renderPdf(url) {
+                body.innerHTML = `<iframe class="reader-frame" src="${url}#toolbar=1&view=FitH" style="width:100%; height:70vh; border:none;" title="PDF reader"></iframe>`;
+            }
+
+            function renderImage(url, name) {
+                body.innerHTML = `
+                        <div class="reader-image-wrap text-center">
+                            <img src="${url}" alt="${escapeHtml(name)}" class="reader-image img-fluid" />
+                        </div>`;
+            }
+
+            function renderUnsupported(url, name) {
+                body.innerHTML = `
+                        <div class="reader-unsupported text-center py-4">
+                            <i class="bi bi-file-earmark-x display-4 text-muted"></i>
+                            <p class="mt-3 mb-1"><strong>Preview not available for this file type.</strong></p>
+                            <p class="text-muted small">${escapeHtml(name || '')}</p>
+                            <a href="${url}" class="btn-pill btn-pill-primary mt-2" download>
+                                <i class="bi bi-download"></i> Download file
+                            </a>
+                        </div>`;
+            }
+
+            function renderError(msg) {
+                body.innerHTML = `
+                        <div class="reader-unsupported text-center py-4">
+                            <i class="bi bi-exclamation-triangle text-danger display-4"></i>
+                            <p class="mt-3 mb-0">${escapeHtml(msg)}</p>
+                        </div>`;
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', boot);
+        } else {
+            boot();
+        }
+    })();
+</script>

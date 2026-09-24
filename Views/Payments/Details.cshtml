@@ -1,0 +1,68 @@
+@model EBook.Models.Payment
+
+@{
+    ViewData["Title"] = "Payment Details";
+    var isAdmin = User.IsInRole("Admin");
+    var status = Model?.PaymentStatus?.ToString() ?? "";
+    var statusClass = status.ToLower() switch
+    {
+        "paid" or "completed" or "success" => "status-paid",
+        "pending" or "processing" => "status-pending",
+        "failed" or "cancelled" => "status-failed",
+        _ => "status-neutral"
+    };
+}
+
+<div class="page-header">
+    <div>
+        <h1>Payment Details</h1>
+        <span class="subtitle">Full information about this payment</span>
+    </div>
+    <a asp-action="Index" class="btn-pill btn-pill-neutral">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="details-card">
+    <div class="payment-amount-hero">
+        <span class="payment-amount-label">Amount</span>
+        <span class="payment-amount-value">@Html.DisplayFor(model => model.Amount)</span>
+        <span class="status-badge @statusClass mt-2">
+            <i class="bi bi-circle-fill"></i>
+            @status
+        </span>
+    </div>
+
+    <dl class="details-list">
+        <dt>@Html.DisplayNameFor(model => model.PaymentMethod)</dt>
+        <dd>@Html.DisplayFor(model => model.PaymentMethod)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.PaymentDate)</dt>
+        <dd>@Html.DisplayFor(model => model.PaymentDate)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.PaymentStatus)</dt>
+        <dd>@Html.DisplayFor(model => model.PaymentStatus)</dd>
+
+        @if (isAdmin)
+        {
+            <dt>@Html.DisplayNameFor(model => model.UserId)</dt>
+            <dd class="text-muted small">@Html.DisplayFor(model => model.UserId)</dd>
+
+            <dt>@Html.DisplayNameFor(model => model.User)</dt>
+            <dd>@Html.DisplayFor(model => model.User)</dd>
+        }
+    </dl>
+
+    <div class="form-actions">
+        @if (isAdmin)
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.id" class="btn-pill btn-pill-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model?.id" class="btn-pill btn-pill-danger">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        }
+        <a asp-action="Index" class="btn-pill btn-pill-neutral">Back to List</a>
+    </div>
+</div>

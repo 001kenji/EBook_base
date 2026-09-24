@@ -1,0 +1,77 @@
+@model EBook.Models.Payment
+
+@{
+    ViewData["Title"] = "Edit Payment";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Edit Payment</h1>
+        <span class="subtitle">Update the details of this payment</span>
+    </div>
+    <a asp-action="Index" class="btn-pill btn-pill-neutral">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="form-card">
+    <form asp-action="Edit" method="post" >
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+        <input type="hidden" asp-for="id" />
+
+        <div class="form-group">
+            <label asp-for="Amount" class="control-label">
+                <i class="bi bi-cash-coin me-1"></i> @Html.DisplayNameFor(m => m.Amount)
+            </label>
+            <input asp-for="Amount" class="form-control" />
+            <span asp-validation-for="Amount" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PaymentMethod" class="control-label">
+                <i class="bi bi-wallet2 me-1"></i> @Html.DisplayNameFor(m => m.PaymentMethod)
+            </label>
+            <input asp-for="PaymentMethod" class="form-control" />
+            <span asp-validation-for="PaymentMethod" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PaymentDate" class="control-label">
+                <i class="bi bi-calendar-event me-1"></i> @Html.DisplayNameFor(m => m.PaymentDate)
+            </label>
+            <input asp-for="PaymentDate" type="date" class="form-control" />
+            <span asp-validation-for="PaymentDate" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PaymentStatus" class="control-label">
+                <i class="bi bi-activity me-1"></i> @Html.DisplayNameFor(m => m.PaymentStatus)
+            </label>
+            <input asp-for="PaymentStatus" class="form-control" />
+            <span asp-validation-for="PaymentStatus" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label">
+                <i class="bi bi-person-badge me-1"></i> @Html.DisplayNameFor(m => m.UserId)
+            </label>
+            <input asp-for="UserId" class="form-control"r readonly />
+            <span asp-validation-for="UserId" class="text-danger small"></span>
+        </div>
+
+        
+
+        <div class="form-actions">
+            <button type="submit" class="btn-pill btn-pill-primary">
+                <i class="bi bi-save"></i> Save Changes
+            </button>
+            <a asp-action="Index" class="btn-pill btn-pill-neutral">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

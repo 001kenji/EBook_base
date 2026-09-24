@@ -1,0 +1,67 @@
+@model EBook.Models.Library
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Edit Library</h1>
+        <span class="subtitle">Update the details of this entry</span>
+    </div>
+    <a asp-action="Index" class="btn-pill btn-pill-neutral">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="form-card">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <input type="hidden" asp-for="id" />
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">
+                <i class="bi bi-book me-1"></i> @Html.DisplayNameFor(m => m.Name)
+            </label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Scope" class="control-label">
+                <i class="bi bi-bullseye me-1"></i> @Html.DisplayNameFor(m => m.Scope)
+            </label>
+            <input asp-for="Scope" class="form-control" />
+            <span asp-validation-for="Scope" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Curriculum" class="control-label">
+                <i class="bi bi-mortarboard me-1"></i> @Html.DisplayNameFor(m => m.Curriculum)
+            </label>
+            <input asp-for="Curriculum" class="form-control" />
+            <span asp-validation-for="Curriculum" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FilePath" class="control-label">
+                <i class="bi bi-file-earmark me-1"></i> Existing file
+            </label>
+            <input asp-for="FilePath" class="form-control" readonly />
+            <span asp-validation-for="FilePath" class="text-danger small"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">
+                <i class="bi bi-upload me-1"></i> Replace existing book / file
+            </label>
+            <input type="file" name="uploadFile" class="form-control" required />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-pill btn-pill-primary">
+                <i class="bi bi-save"></i> Save Changes
+            </button>
+            <a asp-action="Index" class="btn-pill btn-pill-neutral">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,67 @@
+@model EBook.Models.Payment
+
+@{
+    ViewData["Title"] = "Create Payment";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Create Payment</h1>
+        <span class="subtitle">Record a new payment entry</span>
+    </div>
+    <a asp-action="Index" class="btn-pill btn-pill-neutral">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="form-card">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="form-group">
+            <label asp-for="Amount" class="control-label">
+                <i class="bi bi-cash-coin me-1"></i> @Html.DisplayNameFor(m => m.Amount)
+            </label>
+            <input asp-for="Amount" class="form-control" placeholder="e.g. 1500.00" />
+            <span asp-validation-for="Amount" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PaymentMethod" class="control-label">
+                <i class="bi bi-wallet2 me-1"></i> @Html.DisplayNameFor(m => m.PaymentMethod)
+            </label>
+            <input asp-for="PaymentMethod" class="form-control" placeholder="e.g. M-Pesa, Card, PayPal" />
+            <span asp-validation-for="PaymentMethod" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PaymentDate" class="control-label">
+                <i class="bi bi-calendar-event me-1"></i> @Html.DisplayNameFor(m => m.PaymentDate)
+            </label>
+            <input asp-for="PaymentDate" type="date" class="form-control" />
+            <span asp-validation-for="PaymentDate" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PaymentStatus" class="control-label">
+                <i class="bi bi-activity me-1"></i> @Html.DisplayNameFor(m => m.PaymentStatus)
+            </label>
+            <input asp-for="PaymentStatus" class="form-control" placeholder="e.g. Paid, Pending, Failed" />
+            <span asp-validation-for="PaymentStatus" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">
+                <i class="bi bi-envelope me-1"></i> User Email
+            </label>
+            <input type="email" name="UserEmail" class="form-control" placeholder="user@example.com" required />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-pill btn-pill-primary">
+                <i class="bi bi-check-lg"></i> Create
+            </button>
+            <a asp-action="Index" class="btn-pill btn-pill-neutral">Cancel</a>
+        </div>
+    </form>
+</div>

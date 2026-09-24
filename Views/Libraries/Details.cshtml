@@ -1,0 +1,55 @@
+@model EBook.Models.Library
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Library Details</h1>
+        <span class="subtitle">Full information about this entry</span>
+    </div>
+    <a asp-action="Index" class="btn-pill btn-pill-neutral">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+<div class="details-card">
+    <dl class="details-list">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Scope)</dt>
+        <dd>@Html.DisplayFor(model => model.Scope)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Curriculum)</dt>
+        <dd>@Html.DisplayFor(model => model.Curriculum)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.FilePath)</dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model?.FilePath))
+            {
+                <a href="@Model.FilePath" target="_blank" class="btn-pill btn-pill-neutral">
+                    <i class="bi bi-download"></i> Download / View
+                </a>
+            }
+            else
+            {
+                <span class="text-muted">No file</span>
+            }
+        </dd>
+    </dl>
+
+    <div class="form-actions">
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model?.id" class="btn-pill btn-pill-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model?.id" class="btn-pill btn-pill-danger">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        }
+        <a asp-action="Index" class="btn-pill btn-pill-neutral">Back to List</a>
+    </div>
+</div>
